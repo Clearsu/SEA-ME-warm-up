@@ -21,12 +21,15 @@ set(PROJECT_SOURCES
         Contact.hpp
         ContactList.cpp
         ContactList.hpp
+        ContactFileHandler.cpp
+        ContactFileHandler.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ex00
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        FileIO.hpp FileIO.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ex00 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
