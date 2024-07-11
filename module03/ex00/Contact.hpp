@@ -10,7 +10,8 @@ public:
     Contact(const Contact& other);
     Contact(const QString& name,
             const QString& number,
-            const QString& email);
+            const QString& email,
+            bool isBookmarked = false);
     Contact& operator=(const Contact& other);
     ~Contact();
 

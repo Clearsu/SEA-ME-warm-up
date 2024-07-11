@@ -1,9 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "ContactList.hpp"
+#include "ContactFileHandler.hpp"
+
 #include <QMainWindow>
 #include <QTableWidget>
-#include "ContactList.hpp"
 
 #define CHECKBOX_COL 0
 #define NAME_COL 1
@@ -38,6 +40,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     ContactList		contactList;
+    FileIO			fileHandler;
     int				checkCount;
 
     void	clearInputFields() const;

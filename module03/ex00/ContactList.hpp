@@ -10,6 +10,7 @@
 class ContactList {
 public:
     ContactList();
+    ContactList(const std::multimap<QString, Contact>& contacts);
     ~ContactList();
 
     void	add(const QString& name,
@@ -23,12 +24,17 @@ public:
     void					bookmarkContact(const QString& name, const QString& number);
     void					unbookmarkContact(const QString& name, const QString& number);
 
+    const std::multimap<QString, Contact>&	getContacts() const;
+    void	setContacts(const std::multimap<QString, Contact>& contacts);
+
 private:
     std::multimap<QString, Contact>	contacts;
     std::set<QString>				numbers;
 
     bool isNumberUnique(const QString& number);
+    void initializeNumbers();
 
+public:
     class NumberDuplicateException: public std::exception {
     public:
         const char*	what() const noexcept;

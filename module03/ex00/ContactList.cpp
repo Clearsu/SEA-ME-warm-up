@@ -2,6 +2,9 @@
 #include <QDebug>
 
 ContactList::ContactList() {}
+ContactList::ContactList(const std::multimap<QString, Contact>& contacts): contacts(contacts) {
+    this->initializeNumbers();
+}
 ContactList::~ContactList() {}
 
 void ContactList::add(const QString& name, const QString& number,
@@ -116,8 +119,32 @@ void ContactList::unbookmarkContact(const QString &name, const QString &number) 
     throw ContactNotExistException();
 }
 
+const std::multimap<QString, Contact>&	ContactList::getContacts() const {
+    return this->contacts;
+}
+
+void ContactList::setContacts(const std::multimap<QString, Contact>& contacts) {
+    this->contacts = contacts;
+    this->initializeNumbers();
+}
+
 bool ContactList::isNumberUnique(const QString &number) {
     return this->numbers.find(number) == this->numbers.end();
+}
+
+void ContactList::initializeNumbers() {
+    auto it = this->contacts.begin();
+    auto end = this->contacts.end();
+
+    while (it != end) {
+        const QString& number = it->second.getNumber();
+        if (this->isNumberUnique(number)) {
+            this->numbers.insert(number);
+        } else {
+            throw NumberDuplicateException();
+        }
+        ++it;
+    }
 }
 
 const char* ContactList::NumberDuplicateException::what() const noexcept {

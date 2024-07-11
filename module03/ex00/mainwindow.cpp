@@ -1,13 +1,18 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+
 #include <QComboBox>
 #include <QMessageBox>
 #include <QDebug>
+#include <QFileInfo>
 
 /**********     public     **********/
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), checkCount(0) {
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , fileHandler(QCoreApplication::applicationDirPath() + "/../../../../../contacts.csv")
+    , checkCount(0) {
     this->ui->setupUi(this);
 
     QWidget::setWindowTitle("My Phonebook");
@@ -21,6 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->showBookmarkButton, &QPushButton::clicked, this, &MainWindow::onShowBookmarksButtonClicked);
     connect(this->ui->contactTableWidget, &QTableWidget::itemChanged, this, &MainWindow::onCheckBoxClicked);
     connect(this->ui->searchButton, &QPushButton::clicked, this, &MainWindow::onSearchButtonClicked);
+
+    try {
+        this->contactList.setContacts(this->fileHandler.loadContactsFromFile());
+    } catch (const std::exception& e) {
+        this->showWarningDialog(e.what());
+        QApplication::quit();
+        return;
+    }
 
     this->reloadContactWidget(this->contactList.getAllContacts());
 }

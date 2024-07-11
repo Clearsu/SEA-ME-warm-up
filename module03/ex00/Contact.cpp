@@ -8,9 +8,10 @@ Contact::Contact(const Contact& other)
 
 Contact::Contact(const QString& name,
                  const QString& number,
-                 const QString& email)
+                 const QString& email,
+                 bool isBookmarked)
     : name(name), number(number),
-    email(email), isBookmarked(false) {}
+    email(email), isBookmarked(isBookmarked) {}
 
 Contact& Contact::operator=(const Contact& other) {
     if (this != &other) {
