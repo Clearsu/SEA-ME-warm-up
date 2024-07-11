@@ -11,7 +11,7 @@ void ContactList::add(const QString& name, const QString& number,
                       const QString& email) {
     if (this->isNumberUnique(number)) {
         this->contacts.insert({name,
-                               Contact(name, number, email)});
+                               Contact(name, number, email, false)});
         this->numbers.insert(number);
     } else {
         throw NumberDuplicateException();
@@ -40,7 +40,7 @@ std::vector<Contact> ContactList::searchByName(const QString& name) {
     std::vector<Contact> matchingContacts;
 
     while (it != end) {
-        if (it->first.contains(name)) {
+        if (it->first.toLower().contains(name)) {
             matchingContacts.push_back(it->second);
         }
         ++it;

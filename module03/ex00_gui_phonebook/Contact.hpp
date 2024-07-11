@@ -2,7 +2,6 @@
 #define CONTACT_HPP
 
 #include <QString>
-#include <exception>
 
 class Contact {
 public:
@@ -11,7 +10,7 @@ public:
     Contact(const QString& name,
             const QString& number,
             const QString& email,
-            bool isBookmarked = false);
+            bool isBookmarked);
     Contact& operator=(const Contact& other);
     ~Contact();
 

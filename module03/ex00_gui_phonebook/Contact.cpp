@@ -4,7 +4,7 @@ Contact::Contact() {}
 
 Contact::Contact(const Contact& other)
     : name(other.name), number(other.number),
-    email(other.email), isBookmarked(false) {}
+    email(other.email), isBookmarked(other.isBookmarked) {}
 
 Contact::Contact(const QString& name,
                  const QString& number,

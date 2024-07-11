@@ -38,10 +38,10 @@ private slots:
     void	onSearchButtonClicked();
 
 private:
-    Ui::MainWindow *ui;
-    ContactList		contactList;
-    FileIO			fileHandler;
-    int				checkCount;
+    Ui::MainWindow*		ui;
+    ContactList			contactList;
+    ContactFileHandler	fileHandler;
+    int					checkCount;
 
     void	clearInputFields() const;
     void	reloadContactWidget(const std::vector<Contact>& contacts);
@@ -50,6 +50,8 @@ private:
     void	disableRemoveAndBookmarkButtons();
 
     void	showWarningDialog(const QString& message);
+    void	deleteWindowAndExit();
+    void	updateContactFile();
 
 };
 #endif // MAINWINDOW_H

@@ -31,8 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->contactList.setContacts(this->fileHandler.loadContactsFromFile());
     } catch (const std::exception& e) {
         this->showWarningDialog(e.what());
-        QApplication::quit();
-        return;
+        this->deleteWindowAndExit();
     }
 
     this->reloadContactWidget(this->contactList.getAllContacts());
@@ -67,6 +66,7 @@ void MainWindow::onSaveButtonClicked() {
         return;
     }
 
+    this->updateContactFile();
     this->reloadContactWidget(this->contactList.getAllContacts());
     this->clearInputFields();
     this->ui->stackedWidget->setCurrentIndex(0);
@@ -88,6 +88,7 @@ void MainWindow::onBookmarkButtonClicked() {
                 tableWidget.item(row, NUMBER_COL)->text());
         }
     }
+    this->updateContactFile();
     this->reloadContactWidget(this->contactList.getAllContacts());
 }
 
@@ -102,6 +103,7 @@ void MainWindow::onUnbookmarkButtonClicked() {
                 tableWidget.item(row, NUMBER_COL)->text());
         }
     }
+    this->updateContactFile();
     this->reloadContactWidget(this->contactList.getBookmarkedContacts());
 }
 
@@ -116,6 +118,7 @@ void MainWindow::onRemoveButtonClicked() {
                 tableWidget.item(row, NUMBER_COL)->text());
         }
     }
+    this->updateContactFile();
     this->reloadContactWidget(this->contactList.getAllContacts());
 }
 
@@ -159,11 +162,10 @@ void MainWindow::onSearchButtonClicked() {
         return;
     }
 
-    this->ui->searchInput->clear();
     if (this->ui->searchOptionComboBox->currentText() == "Search by name") {
-        this->reloadContactWidget(this->contactList.searchByName(textInput));
+        this->reloadContactWidget(this->contactList.searchByName(textInput.toLower()));
     } else {
-        this->reloadContactWidget(this->contactList.searchByNumber(textInput));
+        this->reloadContactWidget(this->contactList.searchByNumber(textInput.toLower()));
     }
 }
 
@@ -220,8 +222,19 @@ void MainWindow::showWarningDialog(const QString &message) {
     QMessageBox::warning(this, "Warning: ", message);
 }
 
+void MainWindow::deleteWindowAndExit() {
+    this->deleteLater();
+    QCoreApplication::exit(1);
+}
 
-
+void MainWindow::updateContactFile() {
+        try {
+        this->fileHandler.saveContactsToFile(this->contactList.getContacts());
+    } catch (const std::exception& e) {
+        this->showWarningDialog(e.what());
+        this->deleteWindowAndExit();
+    }
+}
 
 
 
